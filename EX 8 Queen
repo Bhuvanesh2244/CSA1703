@@ -1,29 +1,41 @@
-def water_jug_problem(capacity_a, capacity_b, target):
-    jug_a = 0
-    jug_b = 0
+def is_safe(board, row, col, n):
+    for i in range(col):
+        if board[row][i] == 1:
+            return False
 
-    while jug_a != target and jug_b != target:
-        print(f"Jug A: {jug_a} / {capacity_a}, Jug B: {jug_b} / {capacity_b}")
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
 
-        if jug_a == 0:
-            # Fill jug A if it's empty
-            jug_a = capacity_a
-        elif jug_b == capacity_b:
-            jug_b = 0
-        else:
-            space_in_b = capacity_b - jug_b
-            if jug_a <= space_in_b:
-                jug_b += jug_a
-                jug_a = 0
-            else:
-                jug_a -= space_in_b
-                jug_b = capacity_b
+    for i, j in zip(range(row, n, 1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
 
-    print(f"Jug A: {jug_a} / {capacity_a}, Jug B: {jug_b} / {capacity_b}")
-    print("Goal achieved!")
+    return True
 
-jug_capacity_a = 4
-jug_capacity_b = 3
-target_amount = 2
+def solve_n_queens(n):
+    board = [[0] * n for _ in range(n)]
+    if not solve_n_queens_util(board, 0, n):
+        print("No solution exists")
+        return
 
-water_jug_problem(jug_capacity_a, jug_capacity_b, target_amount)
+    print_solution(board)
+
+def solve_n_queens_util(board, col, n):
+    if col >= n:
+        return True
+
+    for i in range(n):
+        if is_safe(board, i, col, n):
+            board[i][col] = 1
+
+            if solve_n_queens_util(board, col + 1, n):
+                return True
+
+            board[i][col] = 0
+    return False
+def print_solution(board):
+    for row in board:
+        print(' '.join(['Q' if x == 1 else '.' for x in row]))
+n = 8
+solve_n_queens(n)
