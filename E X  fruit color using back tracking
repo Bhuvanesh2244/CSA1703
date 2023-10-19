@@ -1,0 +1,21 @@
+% Define the fruits and their possible colors.
+fruit(apple).
+fruit(banana).
+fruit(orange).
+fruit(grape).
+color(red).
+color(yellow).
+color(orange).
+color(purple).
+assign_color(Fruit, Color) :-
+    fruit(Fruit),
+    color(Color).
+unique_colors([]).
+unique_colors([Fruit | Rest]) :-
+    assign_color(Fruit, Color),
+    \+ (member(Fruit2, Rest), assign_color(Fruit2, Color)),
+    unique_colors(Rest).
+find_fruit_colors(FruitColors) :-
+    findall(Fruit-Color, assign_color(Fruit, Color), FruitColors),
+    unique_colors(FruitColors).
+% ?- find_fruit_colors(FruitColors).
