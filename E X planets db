@@ -1,0 +1,25 @@
+% Facts
+planet(mercury, 0.39, 4879).
+planet(venus, 0.72, 12104).
+planet(earth, 1, 12742).
+planet(mars, 1.52, 6779).
+planet(jupiter, 5.20, 139820).
+planet(saturn, 9.58, 116460).
+planet(uranus, 19.22, 50724).
+planet(neptune, 30.05, 49244).
+
+% Rules
+larger(X, Y) :- planet(X, DX, _), planet(Y, DY, _), DX > DY.
+smaller(X, Y) :- planet(X, DX, _), planet(Y, DY, _), DX < DY.
+heavier(X, Y) :- planet(X, _, WX), planet(Y, _, WY), WX > WY.
+lighter(X, Y) :- planet(X, _, WX), planet(Y, _, WY), WX < WY.
+
+% Queries
+% To find planets smaller than Earth:
+% ?- smaller(Planet, earth).
+% To find planets larger than Mars:
+% ?- larger(Planet, mars).
+% To find planets heavier than Jupiter:
+% ?- heavier(Planet, jupiter).
+% To find planets lighter than Neptune:
+% ?- lighter(Planet, neptune).
