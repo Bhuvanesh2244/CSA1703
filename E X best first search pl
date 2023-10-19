@@ -1,0 +1,41 @@
+city(new_york, 50, 10).
+city(san_francisco, 5, 80).
+city(los_angeles, 10, 60).
+city(chicago, 40, 20).
+city(dallas, 30, 40).
+
+goal_city(san_francisco).
+heuristic(State, H) :-
+    city(State, X1, Y1),
+    city(goal_city(Goal), X2, Y2),
+    H is sqrt((X1 - X2) ** 2 + (Y1 - Y2) ** 2)
+successor(State, NextState) :-
+    city(State, _, _),
+    city(NextState, _, _),
+    State \= NextState.
+best_first_search(Start, Path) :-
+    best_first_search_internal([Start], [], Path).
+best_first_search_internal([CurrentState | RestOpen], Closed, Path) :-
+    goal_city(Goal),
+    CurrentState = Goal,
+    reverse([CurrentState | Closed], Path).
+    expand(CurrentState, Successors),
+    insert_all(Successors, RestOpen, NewOpen),
+    best_first_search_internal(NewOpen, [CurrentState | Closed], Path).
+expand(State, Successors) :-
+    findall(NextState, successor(State, NextState), Successors).
+insert_all(States, Queue, ResultQueue) :-
+    insert_all_internal(States, Queue, ResultQueue).
+
+insert_all_internal([], Queue, Queue).
+insert_all_internal([State | RestStates], Queue, ResultQueue) :-
+    insert_with_priority(State, Queue, NewQueue),
+    insert_all_internal(RestStates, NewQueue, ResultQueue).
+insert_with_priority(State, [], [State]).
+insert_with_priority(State, [State2 | RestQueue], [State, State2 | RestQueue]) :-
+    heuristic(State, H1),
+    heuristic(State2, H2),
+    H1 =< H2.
+insert_with_priority(State, [State2 | RestQueue], [State2 | NewQueue]) :-
+    insert_with_priority(State, RestQueue, NewQueue).
+% ?- best_first_search(new_york, Path).
