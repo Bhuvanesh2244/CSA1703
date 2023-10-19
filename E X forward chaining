@@ -1,0 +1,46 @@
+% Define facts.
+likes(john, pizza).
+likes(mary, pizza).
+likes(mary, ice_cream).
+
+% Define rules.
+likes(X, Y) :- 
+    pizza(Y), 
+    likes(X, Y).
+
+% Define the forward chaining mechanism.
+forward_chain :- 
+    repeat,
+    (   query,
+        !;
+        new_fact,
+        fail
+    ).
+
+% Ask the user for a query.
+query :-
+    write('Who likes what? (e.g., "Who likes pizza?") or "quit" to exit: '),
+    read(Query),
+    process_query(Query).
+
+process_query(quit) :- !.
+process_query(Query) :-
+    findall(X, Query, Results),
+    format('People who like ~w: ~w~n', [Query, Results]),
+    query.
+
+% Generate a new fact based on the rules.
+new_fact :-
+    likes(X, Y),
+    not(likes(X, Y)),
+    assert(likes(X, Y)),
+    format('~w now likes ~w.~n', [X, Y]).
+
+% Start the forward chaining process.
+start :-
+    write('Forward Chaining Inference System. Type "quit" to exit.~n'),
+    forward_chain,
+    write('Exiting.~n').
+
+% Example usage:
+% To run the program, execute `start.` in the Prolog interpreter and enter queries.
