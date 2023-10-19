@@ -1,0 +1,31 @@
+% Define the fruits and their possible colors.
+fruit(apple).
+fruit(banana).
+fruit(orange).
+fruit(grape).
+
+color(red).
+color(yellow).
+color(orange).
+color(purple).
+
+% Define the rules for assigning colors to fruits.
+assign_color(Fruit, Color) :-
+    fruit(Fruit),
+    color(Color).
+
+% Define the constraint that fruits must have unique colors.
+unique_colors([]).
+unique_colors([Fruit | Rest]) :-
+    assign_color(Fruit, Color),
+    \+ (member(Fruit2, Rest), assign_color(Fruit2, Color)),
+    unique_colors(Rest).
+
+% Define the main predicate to find color assignments for fruits using backtracking.
+find_fruit_colors(FruitColors) :-
+    findall(Fruit-Color, assign_color(Fruit, Color), FruitColors),
+    unique_colors(FruitColors).
+
+% Example usage:
+% To find color assignments for the fruits, you can query the program:
+% ?- find_fruit_colors(FruitColors).
