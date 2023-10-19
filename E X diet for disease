@@ -1,0 +1,20 @@
+% Facts: Nutritional information for various foods
+food(apple, [vitamin_c, fiber, antioxidants, low_calories]).
+food(broccoli, [vitamin_c, vitamin_k, fiber, antioxidants]).
+food(chicken, [protein, vitamins, low_fat]).
+food(pizza, [carbohydrates, fats, sodium]).
+food(fish, [omega_3, protein, vitamins]).
+food(ice_cream, [sugar, fat, deliciousness]).
+
+% Rules: Diet recommendations for Healthitosis
+healthy_foods(Foods) :- findall(F, (food(F, Nutrients), subset([vitamin_c, fiber], Nutrients)), Foods).
+
+% Suggest a diet for Healthitosis
+suggest_diet(Diet) :- healthy_foods(Diet).
+
+% Example Queries
+% To get a list of healthy foods for Healthitosis:
+% ?- healthy_foods(Foods).
+
+% To get a suggested diet for Healthitosis:
+% ?- suggest_diet(Diet).
