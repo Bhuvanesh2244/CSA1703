@@ -1,0 +1,9 @@
+% Facts
+bird(canary).
+bird(sparrow).
+bird(ostrich).
+
+% Rules
+can_fly(X) :- bird(X), not(flightless(X)).
+
+flightless(ostrich).
