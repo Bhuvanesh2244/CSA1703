@@ -1,0 +1,33 @@
+% Define the initial state of the problem.
+initial_state(room(middle, on_table, on_floor, has_not)).
+
+% Define the goal state.
+goal_state(room(_, _, _, has)).
+
+% Define the actions that the monkey can take.
+% The monkey can either move to another room, climb the chair, or grab the banana.
+
+% Move to another room
+move(room(middle, on_table, on_floor, has_not), move(left), room(left, on_table, on_floor, has_not)).
+move(room(middle, on_table, on_floor, has_not), move(right), room(right, on_table, on_floor, has_not)).
+
+% Climb the chair
+move(room(Room, on_table, on_floor, has_not), climb, room(Room, on_table, on_table, has_not)).
+
+% Grab the banana
+move(room(Room, on_table, on_table, has_not), grab, room(Room, on_table, on_table, has)).
+
+% Define a predicate to check if two states are connected by a valid move.
+valid_move(State1, Move, State2) :-
+    move(State1, Move, State2).
+
+% Define a predicate to check if a sequence of moves leads from the initial state to the goal state.
+solve(State, []) :-
+    goal_state(State).
+solve(State1, [Move | RestOfMoves]) :-
+    valid_move(State1, Move, State2),
+    solve(State2, RestOfMoves).
+
+% Example usage:
+% Find a sequence of moves to reach the goal state.
+?- initial_state(InitialState), solve(InitialState, Moves).
