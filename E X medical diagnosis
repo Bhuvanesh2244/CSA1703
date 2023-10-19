@@ -1,0 +1,45 @@
+% Define the symptoms and conditions.
+symptom(fever, flu).
+symptom(cough, flu).
+symptom(runny_nose, flu).
+symptom(headache, flu).
+symptom(sore_throat, flu).
+symptom(fever, covid).
+symptom(cough, covid).
+symptom(shortness_of_breath, covid).
+symptom(loss_of_taste_or_smell, covid).
+symptom(fatigue, covid).
+symptom(rash, allergies).
+symptom(sneezing, allergies).
+symptom(itchy_eyes, allergies).
+symptom(congestion, allergies).
+
+% Define rules for diagnosing conditions based on symptoms.
+diagnose(Patient, Condition) :-
+    symptom(fever, Condition),
+    symptom(cough, Condition),
+    symptom(headache, Condition),
+    symptom(sore_throat, Condition),
+    write('Patient '), write(Patient), write(' is diagnosed with '), write(Condition), nl.
+
+diagnose(Patient, Condition) :-
+    symptom(fever, Condition),
+    symptom(cough, Condition),
+    symptom(shortness_of_breath, Condition),
+    symptom(loss_of_taste_or_smell, Condition),
+    write('Patient '), write(Patient), write(' is diagnosed with '), write(Condition), nl.
+
+diagnose(Patient, Condition) :-
+    symptom(rash, Condition),
+    symptom(sneezing, Condition),
+    symptom(itchy_eyes, Condition),
+    symptom(congestion, Condition),
+    write('Patient '), write(Patient), write(' is diagnosed with '), write(Condition), nl.
+
+% Handle cases where the condition is unknown.
+diagnose(Patient, unknown) :-
+    write('Unable to diagnose the condition for patient '), write(Patient), nl.
+
+% Example usage:
+% To diagnose a patient with a list of symptoms, you can query the program as follows:
+% ?- diagnose(john, Condition).
