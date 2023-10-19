@@ -1,0 +1,13 @@
+% Facts
+cat(felix).
+dog(buddy).
+
+% Rules
+mammal(X) :- cat(X).
+mammal(X) :- dog(X).
+goal(X) :- mammal(X).
+solve_goal(Goal) :- Goal, !.
+solve_goal(Goal) :- rule(Goal, Subgoal), solve_goal(Subgoal).
+
+% Define the "rule" predicate to match rules in your knowledge base
+rule(Goal, Subgoal) :- Goal, !, Subgoal.
